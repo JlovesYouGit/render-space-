@@ -73,3 +73,4 @@ Join the distributed render network and share your GPU memory with the community
 ## License
 
 MIT License - Open source for community development
+https://pixel-density-testerr.vercel.app/
