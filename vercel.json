@@ -2,21 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": "render_space_server.py",
+      "src": "api/index.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/render_space_server.py"
+      "dest": "/api/index.py"
     },
     {
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "env": {
-    "FLASK_ENV": "production"
-  }
+  ]
 }
