@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-08-06T21:23:56.426675",
+  "monitor_count": 2,
+  "monitors": [
+    {
+      "device_name": "\\\\.\\DISPLAY1",
+      "device_string": "Radeon RX 580 Series",
+      "device_id": "PCI\\VEN_1002&DEV_67DF&SUBSYS_8A921462&REV_E7",
+      "primary": true,
+      "resolution_width": 75,
+      "resolution_height": 0,
+      "refresh_rate": 0,
+      "color_depth": 0,
+      "position_x": -1440,
+      "position_y": 0,
+      "diagonal_inches": 24.0,
+      "ppi": 3.125,
+      "pixel_pitch_mm": 8.128,
+      "total_pixels": 0,
+      "aspect_ratio": "1:0",
+      "risk_level": "CRITICAL",
+      "risk_factors": [
+        "CRITICAL: Low refresh rate (0Hz) - high motion sickness risk",
+        "HIGH: Low pixel density (3.1 PPI) - visible pixels may cause discomfort",
+        "MODERATE: Low color depth (0-bit) - may cause visual fatigue"
+      ]
+    },
+    {
+      "device_name": "\\\\.\\DISPLAY2",
+      "device_string": "Radeon RX 580 Series",
+      "device_id": "PCI\\VEN_1002&DEV_67DF&SUBSYS_8A921462&REV_E7",
+      "primary": true,
+      "resolution_width": 30,
+      "resolution_height": 0,
+      "refresh_rate": 0,
+      "color_depth": 2,
+      "position_x": 0,
+      "position_y": 0,
+      "diagonal_inches": 24.0,
+      "ppi": 1.25,
+      "pixel_pitch_mm": 20.32,
+      "total_pixels": 0,
+      "aspect_ratio": "1:0",
+      "risk_level": "CRITICAL",
+      "risk_factors": [
+        "CRITICAL: Low refresh rate (0Hz) - high motion sickness risk",
+        "HIGH: Low pixel density (1.2 PPI) - visible pixels may cause discomfort",
+        "MODERATE: Low color depth (2-bit) - may cause visual fatigue"
+      ]
+    }
+  ]
+}

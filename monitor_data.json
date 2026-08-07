@@ -1,0 +1,45 @@
+﻿{
+    "Screens":  [
+                    {
+                        "Index":  1,
+                        "DeviceName":  "\\\\.\\DISPLAY2",
+                        "Primary":  true,
+                        "BoundsWidth":  1920,
+                        "BoundsHeight":  1080,
+                        "BoundsX":  0,
+                        "BoundsY":  0,
+                        "WorkingAreaWidth":  1920,
+                        "WorkingAreaHeight":  1020,
+                        "BitsPerPixel":  null
+                    },
+                    {
+                        "Index":  2,
+                        "DeviceName":  "\\\\.\\DISPLAY1",
+                        "Primary":  false,
+                        "BoundsWidth":  1440,
+                        "BoundsHeight":  900,
+                        "BoundsX":  -1440,
+                        "BoundsY":  0,
+                        "WorkingAreaWidth":  1440,
+                        "WorkingAreaHeight":  840,
+                        "BitsPerPixel":  null
+                    }
+                ],
+    "Timestamp":  "2026-08-06T21:25:02.9391413-04:00",
+    "ScreenCount":  2,
+    "PNPDisplays":  [
+                        {
+                            "InstanceId":  "ROOT\\DISPLAY\\0000",
+                            "Status":  "OK",
+                            "FriendlyName":  "Meta Virtual Monitor"
+                        },
+                        {
+                            "InstanceId":  "PCI\\VEN_1002\u0026DEV_67DF\u0026SUBSYS_8A921462\u0026REV_E7\\4\u0026EBB8677\u00260\u00260019",
+                            "Status":  "OK",
+                            "FriendlyName":  "Radeon RX 580 Series"
+                        }
+                    ],
+    "RefreshRates":  [
+
+                     ]
+}
