@@ -1,0 +1,8 @@
+*.py
+*.ps1
+*.json
+*.txt
+!package.json
+!public/index.html
+!api/index.js
+!vercel.json

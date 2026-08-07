@@ -1,0 +1,7 @@
+[project]
+name = "render-space"
+version = "1.0.0"
+
+[tool.vercel]
+# Explicitly disable Python detection
+python_version = null
