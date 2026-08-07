@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Render Space - Distributed GPU Memory Network</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8); }
+        }
+        .glow-effect {
+            animation: pulse-glow 2s infinite;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+                Render Space
+            </h1>
+            <p class="text-xl text-gray-300">Distributed GPU Memory Network with Blockchain Integration</p>
+            <div class="mt-4 flex justify-center gap-4">
+                <span class="px-4 py-2 bg-blue-600 rounded-full text-sm">Decentralized</span>
+                <span class="px-4 py-2 bg-purple-600 rounded-full text-sm">Blockchain-Powered</span>
+                <span class="px-4 py-2 bg-green-600 rounded-full text-sm">Real-Time</span>
+            </div>
+        </header>
+
+        <!-- Network Status -->
+        <div class="grid md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-slate-800 rounded-xl p-6 glow-effect">
+                <h3 class="text-lg font-semibold mb-2 text-blue-400">Network Nodes</h3>
+                <p id="node-count" class="text-4xl font-bold">0</p>
+                <p class="text-gray-400 text-sm">Active render nodes</p>
+            </div>
+            <div class="bg-slate-800 rounded-xl p-6 glow-effect">
+                <h3 class="text-lg font-semibold mb-2 text-purple-400">GPU Memory</h3>
+                <p id="memory-total" class="text-4xl font-bold">0 GB</p>
+                <p class="text-gray-400 text-sm">Shared memory space</p>
+            </div>
+            <div class="bg-slate-800 rounded-xl p-6 glow-effect">
+                <h3 class="text-lg font-semibold mb-2 text-green-400">Blockchain</h3>
+                <p id="blockchain-length" class="text-4xl font-bold">0</p>
+                <p class="text-gray-400 text-sm">Blocks mined</p>
+            </div>
+        </div>
+
+        <!-- GPU Memory Regions -->
+        <div class="bg-slate-800 rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-blue-400">GPU Memory Regions</h2>
+            <div id="gpu-regions" class="space-y-4">
+                <p class="text-gray-400">Loading GPU memory data...</p>
+            </div>
+        </div>
+
+        <!-- Refresh Rate Data -->
+        <div class="bg-slate-800 rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-purple-400">High-Precision Timing Data</h2>
+            <div id="timing-data" class="space-y-4">
+                <p class="text-gray-400">Loading timing data...</p>
+            </div>
+        </div>
+
+        <!-- Blockchain Explorer -->
+        <div class="bg-slate-800 rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-green-400">Blockchain Explorer</h2>
+            <div id="blockchain-data" class="space-y-4">
+                <p class="text-gray-400">Loading blockchain data...</p>
+            </div>
+        </div>
+
+        <!-- Node Registration -->
+        <div class="bg-slate-800 rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-yellow-400">Register Your Node</h2>
+            <form id="node-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Node ID</label>
+                    <input type="text" id="node-id" class="w-full bg-slate-700 rounded-lg px-4 py-2 text-white" placeholder="Auto-generated or custom">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Blockchain Address</label>
+                    <input type="text" id="blockchain-address" class="w-full bg-slate-700 rounded-lg px-4 py-2 text-white" placeholder="Your blockchain address">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Refresh Rate (Hz)</label>
+                    <input type="number" id="refresh-rate" class="w-full bg-slate-700 rounded-lg px-4 py-2 text-white" placeholder="60">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 py-3 rounded-lg font-semibold hover:opacity-90 transition">
+                    Register Node
+                </button>
+            </form>
+        </div>
+
+        <!-- Bitcoin Integration -->
+        <div class="bg-slate-800 rounded-xl p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-orange-400">Bitcoin Integration</h2>
+            <div id="bitcoin-status" class="space-y-4">
+                <p class="text-gray-400">Loading Bitcoin integration status...</p>
+            </div>
+        </div>
+
+        <!-- Memory Sharing -->
+        <div class="bg-slate-800 rounded-xl p-6">
+            <h2 class="text-2xl font-bold mb-4 text-pink-400">Share GPU Memory</h2>
+            <button id="share-memory-btn" class="w-full bg-gradient-to-r from-pink-600 to-red-600 py-3 rounded-lg font-semibold hover:opacity-90 transition">
+                Share Memory with Network
+            </button>
+            <div id="share-result" class="mt-4 text-gray-400"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+
+        // Fetch network stats
+        async function fetchNetworkStats() {
+            try {
+                const response = await fetch(`${API_BASE}/network-stats`);
+                const data = await response.json();
+                
+                document.getElementById('node-count').textContent = data.total_nodes;
+                document.getElementById('memory-total').textContent = data.total_gpu_memory_gb.toFixed(2) + ' GB';
+                document.getElementById('blockchain-length').textContent = data.blockchain_length;
+            } catch (error) {
+                console.error('Error fetching network stats:', error);
+            }
+        }
+
+        // Fetch GPU memory
+        async function fetchGPUMemory() {
+            try {
+                const response = await fetch(`${API_BASE}/gpu-memory`);
+                const data = await response.json();
+                
+                const container = document.getElementById('gpu-regions');
+                container.innerHTML = data.gpu_memory_regions.map(region => `
+                    <div class="bg-slate-700 rounded-lg p-4">
+                        <div class="flex justify-between items-center">
+                            <span class="font-mono text-blue-300">${region.base_address}</span>
+                            <span class="text-green-400">${region.size_gb.toFixed(2)} GB</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-2">Type: ${region.type}</p>
+                        <p class="text-sm text-gray-400">Protection: ${region.protection}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error fetching GPU memory:', error);
+            }
+        }
+
+        // Fetch timing data
+        async function fetchTimingData() {
+            try {
+                const response = await fetch(`${API_BASE}/refresh-rate`);
+                const data = await response.json();
+                
+                const container = document.getElementById('timing-data');
+                container.innerHTML = `
+                    <div class="bg-slate-700 rounded-lg p-4">
+                        <p class="text-blue-300">Timer Frequency: ${data.timing_data.timer_frequency_hz.toLocaleString()} Hz</p>
+                        <p class="text-purple-300">Timer Resolution: ${data.timing_data.timer_resolution_microseconds.toFixed(6)} μs</p>
+                        <p class="text-green-300">Max Refresh Rate: ${data.timing_data.max_refresh_rate} Hz</p>
+                        <p class="text-yellow-300">Frame Time: ${data.timing_data.frame_time_microseconds.toFixed(3)} μs</p>
+                        <p class="text-pink-300">Available Rates: ${data.timing_data.available_refresh_rates_hz.join(', ')} Hz</p>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error fetching timing data:', error);
+            }
+        }
+
+        // Fetch blockchain
+        async function fetchBlockchain() {
+            try {
+                const response = await fetch(`${API_BASE}/blockchain`);
+                const data = await response.json();
+                
+                const container = document.getElementById('blockchain-data');
+                const recentBlocks = data.blocks.slice(-5).reverse();
+                
+                container.innerHTML = recentBlocks.map(block => `
+                    <div class="bg-slate-700 rounded-lg p-4">
+                        <p class="text-blue-300 font-mono text-sm">Block #${block.index}</p>
+                        <p class="text-gray-400 text-xs">Hash: ${block.hash.substring(0, 16)}...</p>
+                        <p class="text-purple-300 text-sm">Type: ${block.data.type}</p>
+                        <p class="text-gray-500 text-xs">${block.timestamp}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error fetching blockchain:', error);
+            }
+        }
+
+        // Fetch Bitcoin status
+        async function fetchBitcoinStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/bitcoin-integration`);
+                const data = await response.json();
+                
+                const container = document.getElementById('bitcoin-status');
+                container.innerHTML = `
+                    <div class="bg-slate-700 rounded-lg p-4">
+                        <p class="text-green-400">Status: ${data.bitcoin_integration.status}</p>
+                        <p class="text-blue-300">Network: ${data.bitcoin_integration.network}</p>
+                        <p class="text-purple-300">Node Address: ${data.bitcoin_integration.node_address.substring(0, 16)}...</p>
+                        <div class="mt-2">
+                            ${data.bitcoin_integration.features.map(f => `<span class="inline-block bg-orange-600 px-2 py-1 rounded text-xs mr-2">${f}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error fetching Bitcoin status:', error);
+            }
+        }
+
+        // Register node
+        document.getElementById('node-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const nodeId = document.getElementById('node-id').value || crypto.randomUUID();
+            const blockchainAddress = document.getElementById('blockchain-address').value;
+            const refreshRate = parseInt(document.getElementById('refresh-rate').value) || 60;
+            
+            try {
+                const response = await fetch(`${API_BASE}/register-node`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        node_id: nodeId,
+                        blockchain_address: blockchainAddress,
+                        refresh_rate: refreshRate
+                    })
+                });
+                
+                const data = await response.json();
+                alert(`Node registered: ${data.node_id}`);
+            } catch (error) {
+                console.error('Error registering node:', error);
+            }
+        });
+
+        // Share memory
+        document.getElementById('share-memory-btn').addEventListener('click', async () => {
+            try {
+                const response = await fetch(`${API_BASE}/share-memory`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        memory_regions: [],
+                        refresh_rate: 60
+                    })
+                });
+                
+                const data = await response.json();
+                document.getElementById('share-result').textContent = `Memory shared: ${data.share_id}`;
+            } catch (error) {
+                console.error('Error sharing memory:', error);
+            }
+        });
+
+        // Initial load and refresh
+        fetchNetworkStats();
+        fetchGPUMemory();
+        fetchTimingData();
+        fetchBlockchain();
+        fetchBitcoinStatus();
+
+        // Refresh every 5 seconds
+        setInterval(() => {
+            fetchNetworkStats();
+            fetchBlockchain();
+        }, 5000);
+    </script>
+</body>
+</html>
